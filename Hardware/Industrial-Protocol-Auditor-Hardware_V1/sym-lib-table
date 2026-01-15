@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "MAX17048G_T10")(type "KiCad")(uri "${KIPRJMOD}/Components/MAX17048G_T10.kicad_sym")(options "")(descr ""))
+)
