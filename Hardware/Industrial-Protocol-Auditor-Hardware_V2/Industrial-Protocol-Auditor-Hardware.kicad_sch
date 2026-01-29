@@ -8051,6 +8051,12 @@
 		(uuid "bbec0e37-e464-4140-b81a-e0072b8e72d3")
 	)
 	(junction
+		(at 224.79 63.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bca9ae1b-d14b-4c38-ae30-aeaa4da2825b")
+	)
+	(junction
 		(at 152.4 57.15)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8139,6 +8145,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ef78d2f6-49eb-4c7a-bbfd-affab0e686c6")
+	)
+	(junction
+		(at 224.79 71.12)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f3cea9e0-06b6-44ae-9958-353c38420e36")
 	)
 	(junction
 		(at 101.6 33.02)
@@ -8308,7 +8320,7 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 71.12) (xy 223.52 71.12)
+			(xy 222.25 71.12) (xy 224.79 71.12)
 		)
 		(stroke
 			(width 0)
@@ -9008,16 +9020,6 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 71.12) (xy 232.41 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3cbbff2d-b68f-4a93-8c34-a7a89074c930")
-	)
-	(wire
-		(pts
 			(xy 85.09 173.99) (xy 82.55 173.99)
 		)
 		(stroke
@@ -9078,7 +9080,7 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 63.5) (xy 227.33 63.5)
+			(xy 222.25 63.5) (xy 224.79 63.5)
 		)
 		(stroke
 			(width 0)
@@ -10648,6 +10650,16 @@
 	)
 	(wire
 		(pts
+			(xy 224.79 63.5) (xy 227.33 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "abb3df2f-3bca-49f1-841d-961ecf1f1e94")
+	)
+	(wire
+		(pts
 			(xy 50.8 101.6) (xy 50.8 104.14)
 		)
 		(stroke
@@ -11738,6 +11750,16 @@
 	)
 	(wire
 		(pts
+			(xy 224.79 71.12) (xy 232.41 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "efedf954-09b8-4133-8881-58ea0718966b")
+	)
+	(wire
+		(pts
 			(xy 226.06 151.13) (xy 243.84 151.13)
 		)
 		(stroke
@@ -12076,6 +12098,16 @@
 		)
 		(uuid "17ecaf01-ea93-4bd7-84cd-fe83529521b0")
 	)
+	(label "BATT"
+		(at 72.39 171.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ac0d678-ac41-4280-8a29-2ca6828a12a3")
+	)
 	(label "MISO"
 		(at 222.25 104.14 0)
 		(effects
@@ -12376,16 +12408,6 @@
 		)
 		(uuid "79395727-e201-4be4-9350-56f27a92e394")
 	)
-	(label "VBAT"
-		(at 215.9 123.19 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "7f52a97a-cfa8-41d3-8ebf-3f42be96af37")
-	)
 	(label "TXD0"
 		(at 273.05 66.04 180)
 		(effects
@@ -12455,6 +12477,16 @@
 			(justify left bottom)
 		)
 		(uuid "988140a4-5f39-44ba-834b-d06018c321a4")
+	)
+	(label "BATT"
+		(at 215.9 123.19 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "991c12a7-4c2a-42f2-94f1-62536ec1a406")
 	)
 	(label "RS_Rx"
 		(at 133.35 83.82 180)
@@ -24397,6 +24429,93 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 224.79 67.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f1e9c91b-2628-48f8-b202-6ec196d88f5e")
+		(property "Reference" "R30"
+			(at 222.758 66.04 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "100k"
+			(at 224.79 65.024 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 223.012 67.31 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 224.79 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 224.79 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part" "C25803"
+			(at 224.79 67.31 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Price" "0.0010"
+			(at 224.79 67.31 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f7d66827-4dd4-4d1e-9e4d-673ea25c2134")
+		)
+		(pin "2"
+			(uuid "1927380c-cd0e-40b3-ad6b-e0181ddcdf8d")
+		)
+		(instances
+			(project "Industrial-Protocol-Auditor-Hardware"
+				(path "/056f334c-866c-4662-b79d-4132ffa91d09"
+					(reference "R30")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 158.75 158.75 0)
 		(unit 1)
@@ -24609,93 +24728,6 @@
 			(project ""
 				(path "/056f334c-866c-4662-b79d-4132ffa91d09"
 					(reference "#PWR058")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 227.33 71.12 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f4a2ddbd-f479-46d9-bb73-236eb54526a8")
-		(property "Reference" "R29"
-			(at 228.6 69.088 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "470"
-			(at 229.108 71.12 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 227.33 69.342 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 227.33 71.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 227.33 71.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part" "C23179"
-			(at 227.33 71.12 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Price" "0.0011"
-			(at 227.33 71.12 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "b21cfcc3-1160-4a75-9a15-efeed5df4679")
-		)
-		(pin "2"
-			(uuid "ff36a129-213d-4dc3-b232-54ec1c556aaf")
-		)
-		(instances
-			(project "Industrial Protocol Auditor Board"
-				(path "/056f334c-866c-4662-b79d-4132ffa91d09"
-					(reference "R29")
 					(unit 1)
 				)
 			)
