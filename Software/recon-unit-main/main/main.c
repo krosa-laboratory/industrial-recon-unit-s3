@@ -1,70 +1,91 @@
+/**
+ * 
+ */
+
 #include <stdio.h>
-#include <inttypes.h>
-#include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_chip_info.h"
-#include "esp_flash.h"
-#include "esp_system.h"
-#include "esp_log.h"
-#include "esp_heap_caps.h"
+#include "driver/spi_master.h"      // Low level SPI controller library
+#include "esp_lcd_panel_io.h"       // Data sender for the Display
+#include "esp_lcd_panel_vendor.h"   // Manufacturers drivers for Display
+#include "esp_lcd_panel_ops.h"      // Generic operations for Display
 
-static const char *TAG = "SYS_BOOT";
+// GPIO DEFINITION
+#define PIN_LCD_SCLK 12
+#define PIN_LCD_MOSI 11
+#define PIN_LCD_DC   6
+#define PIN_LCD_CS   10
+#define PIN_LCD_RST  14
+#define PIN_LCD_BL   38
+
+// Display params
+#define LCD_H_RES 128
+#define LCD_V_RES 128
+#define LCD_PIXEL_CLOCK_HZ 20000000 // 20 MHz
 
 void app_main(void)
 {
-    // --- 1. Información del Chip ---
-    esp_chip_info_t chip_info;
-    uint32_t flash_size;
-    esp_chip_info(&chip_info);
-    
-    ESP_LOGI(TAG, "------------------------------------------------");
-    ESP_LOGI(TAG, "Iniciando Industrial Cyber-Recon Unit...");
-    ESP_LOGI(TAG, "------------------------------------------------");
-    
-    ESP_LOGI(TAG, "CPU: ESP32-S3 | Cores: %d | Rev: %d", chip_info.cores, chip_info.revision);
-    
-    // --- 2. Validación de Flash Interna ---
-    if(esp_flash_get_size(NULL, &flash_size) == ESP_OK) {
-        ESP_LOGI(TAG, "Flash Interna: %" PRIu32 " MB (Debería ser 16MB)", flash_size / (1024 * 1024));
-    } else {
-        ESP_LOGE(TAG, "ERROR CRÍTICO: No se puede leer el tamaño de la Flash");
-    }
 
-    // --- 3. Validación de PSRAM (SPIRAM) ---
-    size_t free_psram = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
-    
-    if (free_psram > 0) {
-        ESP_LOGI(TAG, "PSRAM Detectada: %.2f MB disponibles", (float)free_psram / (1024 * 1024));
-    } else {
-        ESP_LOGE(TAG, "FALLO PSRAM: Detectados 0 Bytes. Revisa sdkconfig -> Component config -> ESP32S3-Specific -> SPIRAM");
-        return; // Abortar si no hay RAM
-    }
+    // --- SPI Bus initialization
+    spi_bus_config_t spi_config = {
+        .sclk_io_num = PIN_LCD_SCLK,
+        .mosi_io_num = PIN_LCD_MOSI,
+        .miso_io_num = -1,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        // This is the maximum data block to send with DMA
+        // Defined as: (TOTAL PIXELS * 2 bytes/pixel) + security margin (ie. 8)
+        .max_transfer_sz = LCD_H_RES * LCD_V_RES * 2 + 8
+    };
 
-    // --- 4. Prueba de Estrés de Memoria ---
-    ESP_LOGI(TAG, "Ejecutando Test de Asignación en PSRAM...");
-    
-    // Intentamos reservar un bloque masivo de 4MB (Simulando el Buffer del Sniffer)
-    size_t test_size = 4 * 1024 * 1024; 
-    uint8_t *big_buffer = (uint8_t *)heap_caps_malloc(test_size, MALLOC_CAP_SPIRAM);
+    ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &spi_config, SPI_DMA_CH_AUTO));
 
-    if (big_buffer != NULL) {
-        ESP_LOGI(TAG, "Test OK: Bloque de 4MB reservado correctamente en %p", big_buffer);
-        
-        // Prueba de escritura/lectura rápida para verificar integridad
-        big_buffer[0] = 0xAA;
-        big_buffer[test_size - 1] = 0x55;
-        
-        if (big_buffer[0] == 0xAA && big_buffer[test_size - 1] == 0x55) {
-             ESP_LOGI(TAG, "Integridad de Memoria: VERIFICADA");
-        } else {
-             ESP_LOGE(TAG, "Integridad de Memoria: FALLÓ (Corrupción de datos)");
-        }
-        
-        heap_caps_free(big_buffer);
-        ESP_LOGI(TAG, "Memoria liberada. Sistema listo para Fase 2.");
-        
-    } else {
-        ESP_LOGE(TAG, "Test FALLIDO: No se pudieron reservar 4MB continuos.");
-    }
+    // --- Data sender initialization
+    esp_lcd_panel_io_handle_t io_handle = NULL;
+    esp_lcd_panel_io_spi_config_t io_config = {
+        .dc_gpio_num = PIN_LCD_DC,
+        .cs_gpio_num = PIN_LCD_CS,
+        .pclk_hz = LCD_PIXEL_CLOCK_HZ,
+        .lcd_cmd_bits = 8,
+        .lcd_param_bits = 8,
+        .spi_mode = 0,
+        .trans_queue_depth = 10
+    };
+
+    ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi(SPI2_HOST, &io_config, &io_handle));
+
+    // --- Intall Display driver
+    esp_lcd_panel_handle_t panel_handle = NULL;
+    esp_lcd_panel_dev_config_t panel_config = {
+        .reset_gpio_num = PIN_LCD_RST,
+        .rgb_endian = LCD_RGB_ENDIAN_RGB,
+        .bits_per_pixel = 16
+    };
+
+    ESP_ERROR_CHECK(esp_lcd_new_panel_st7789(io_handle, &panel_config, &panel_handle));
+
+    // --- Power-On Sequence
+    ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
+    ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
+    ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
+
+    // --- Display Test
+    printf("Painting display full red...\n");
+
+    // Get memory for 10 lines for Display.
+    // MALLOC_CAP_DMA forces memory to be in internal SRAM so DMA can access it.
+    uint16_t *buffer = heap_caps_malloc(LCD_H_RES * 10 * sizeof(uint16_t), MALLOC_CAP_DMA);
+
+    // Fill the buffer with RED
+    for (int i = 0; i < LCD_H_RES * 10; i++) buffer[i] = 0xF800;
+
+    // Send the buffer in a loop to fill the screen
+    for (int i = 0; i < LCD_V_RES; i +=10)
+        esp_lcd_panel_draw_bitmap(panel_handle, 0, i, LCD_H_RES, i + 10, buffer);
+
+    printf("Display ready!");
+
+    // Free memory
+    heap_caps_free(buffer);
+
 }
