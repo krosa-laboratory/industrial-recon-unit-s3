@@ -1,8 +1,0 @@
-# Name,   Type, SubType, Offset,  Size, Flags
-nvs,      data, nvs,     ,        0x4000,
-otadata,  data, ota,     ,        0x2000,
-phy_init, data, phy,     ,        0x1000,
-# Factory App: 3MB (Suficiente para WiFi, BLE, LVGL y lógica compleja)
-factory,  app,  factory, ,        3M,
-# Storage: ~12MB para Logs (LittleFS/FatFS)
-storage,  data, spiffs,  ,        12M,
