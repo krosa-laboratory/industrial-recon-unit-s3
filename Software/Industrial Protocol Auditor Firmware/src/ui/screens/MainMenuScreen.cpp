@@ -3,6 +3,7 @@
 
 // Here include all screens available
 #include "CanMonitorScreen.h"
+#include "WiFiScanScreen.h"
 
 extern lv_group_t* navigation_group; 
 
@@ -16,7 +17,7 @@ void MainMenuScreen::onEnter()
     lv_label_set_text(header, "RECON-UNIT");
     lv_obj_align(header, LV_ALIGN_TOP_MID, 0, 5);
     lv_obj_set_style_text_color(header, lv_color_hex(0x00FF00), 0);
-    //lv_obj_set_style_text_font(header, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(header, &lv_font_montserrat_14, 0);
     // List menu
     lv_obj_t* list = lv_list_create(screen);
     lv_obj_set_size(list, 128, 105);
@@ -26,11 +27,12 @@ void MainMenuScreen::onEnter()
     // Add options to the menu
     const char * options[] = { "CAN Bus", "WiFi", "RS485", "Bluetooth", "Settings" };
     // Create each option with static styles and event handling
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < 5; i++)
     {
         lv_obj_t* btn = lv_list_add_btn(list, NULL, options[i]);
         lv_obj_set_style_bg_color(btn, lv_color_hex(0x222222), 0);
         lv_obj_set_style_text_color(btn, lv_color_white(), 0);
+        lv_obj_set_style_text_font(btn, &lv_font_montserrat_10, 0);
         lv_obj_set_style_border_width(btn, 0, 0);
         lv_obj_add_event_cb(btn, event_handler, LV_EVENT_CLICKED, NULL);
         if (navigation_group != NULL) lv_group_add_obj(navigation_group, btn);
@@ -49,7 +51,8 @@ void MainMenuScreen::event_handler(lv_event_t* e)
 
         const char * text = lv_list_get_btn_text(lv_obj_get_parent(obj), obj);
         // Navigation logic
-        if (strcmp(text, "CAN Monitor") == 0) UIManager::getInstance()->switchScreen(new CanMonitorScreen());
+        if (strcmp(text, "CAN Bus") == 0) UIManager::getInstance()->switchScreen(new CanMonitorScreen());
+        else if (strcmp(text, "WiFi") == 0) UIManager::getInstance()->switchScreen(new WiFiScanScreen());
 
     }
 

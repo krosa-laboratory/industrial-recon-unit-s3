@@ -1,5 +1,4 @@
 #include "UIManager.h"
-#include <Arduino.h>
 
 UIManager* UIManager::_instance = nullptr;
 
