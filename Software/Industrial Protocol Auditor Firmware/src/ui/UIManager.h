@@ -19,6 +19,7 @@ class UIManager
 
         // Pointer to the current active screen.
         IScreen* _current_screen = nullptr;
+        IScreen* _next_screen = nullptr;
         // The only instance of the manager (Singleton).
         static UIManager* _instance;
 

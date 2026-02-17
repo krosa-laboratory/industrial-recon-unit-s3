@@ -26,6 +26,7 @@ class CanMonitorScreen : public IScreen
         CanScreenMode _current_mode = MODE_SNIFFER;
         bool _is_paused = false;
         unsigned long _last_update = 0;
+        unsigned long _entry_time = 0;
 
         // GUI Elements
         lv_obj_t* _header_label;

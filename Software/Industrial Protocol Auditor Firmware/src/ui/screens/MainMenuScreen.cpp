@@ -13,10 +13,10 @@ void MainMenuScreen::onEnter()
     lv_obj_set_style_bg_color(screen, lv_color_black(), 0);
     // Main header label
     lv_obj_t* header = lv_label_create(screen);
-    lv_label_set_text(header, "RECON-UNIT [READY]");
+    lv_label_set_text(header, "RECON-UNIT");
     lv_obj_align(header, LV_ALIGN_TOP_MID, 0, 5);
     lv_obj_set_style_text_color(header, lv_color_hex(0x00FF00), 0);
-    lv_obj_set_style_text_font(header, &lv_font_montserrat_14, 0);
+    //lv_obj_set_style_text_font(header, &lv_font_montserrat_14, 0);
     // List menu
     lv_obj_t* list = lv_list_create(screen);
     lv_obj_set_size(list, 128, 105);
@@ -24,7 +24,7 @@ void MainMenuScreen::onEnter()
     lv_obj_set_style_bg_color(list, lv_color_black(), 0);
     lv_obj_set_style_border_width(list, 0, 0);
     // Add options to the menu
-    const char * options[] = { "CAN Monitor", "WiFi Scan", "RS485 Audit", "Settings" };
+    const char * options[] = { "CAN Bus", "WiFi", "RS485", "Bluetooth", "Settings" };
     // Create each option with static styles and event handling
     for(int i = 0; i < 4; i++)
     {

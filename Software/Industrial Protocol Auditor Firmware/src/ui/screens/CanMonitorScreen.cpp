@@ -13,10 +13,12 @@ void CanMonitorScreen::onEnter()
 {
 
     // Prepare the screen.
+    _entry_time = millis();
     lv_obj_t* screen = lv_scr_act();
     lv_obj_set_style_bg_color(screen, lv_color_black(), 0);
     // Common main header.
     _header_label = lv_label_create(screen);
+    lv_label_set_text(_header_label, "CAN: 500kbps [ACTIVE]");
     lv_obj_set_style_text_color(_header_label, lv_color_white(), 0);
     lv_obj_set_style_bg_color(_header_label, lv_color_hex(0x333333), 0);
     lv_obj_set_style_bg_opa(_header_label, LV_OPA_COVER, 0);
@@ -26,15 +28,27 @@ void CanMonitorScreen::onEnter()
     // Build views.
     buildUiSniffer();
     buildUiStats();
+    // Set default value for variables
+    _is_paused = false;
+    _last_update = millis();
     // Default state.
     _current_mode = MODE_SNIFFER;
     lv_obj_clear_flag(_sniffer_view, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_clear_flag(_stats_view, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(_stats_view, LV_OBJ_FLAG_HIDDEN);
+    // Force display update
+    lv_obj_update_layout(screen);
+    lv_obj_invalidate(screen);
 
 }
 
 void CanMonitorScreen::onLoop()
 {
+
+    static unsigned long debug_timer = 0;
+    if (millis() - debug_timer > 1000) {
+        debug_timer = millis();
+        Serial.printf(">>> DEBUG: onLoop vivo. Mode: %d, Paused: %d, Heap: %d bytes\n", _current_mode, _is_paused, ESP.getFreeHeap());
+    }
 
     if (millis() - _last_update > DATA_REFRESH_RATE)
     {
@@ -52,6 +66,8 @@ void CanMonitorScreen::onExit() {}
 
 void CanMonitorScreen::onButtonPress(int gpio)
 {
+
+    if (millis() - _entry_time < 500) return;
 
     if (gpio == 27) // BUTTON BACK.
     {
@@ -88,7 +104,7 @@ void CanMonitorScreen::buildUiSniffer()
     lv_obj_set_style_bg_color(_terminal_text, lv_color_black(), 0);
     lv_obj_set_style_text_color(_terminal_text, COLOR_MATRIX, 0);
     lv_obj_set_style_border_width(_terminal_text, 0, 0);
-    lv_obj_set_style_text_font(_terminal_text, &lv_font_montserrat_14, 0);
+    //lv_obj_set_style_text_font(_terminal_text, &lv_font_montserrat_14, 0);
     lv_textarea_set_cursor_click_pos(_terminal_text, false);
     lv_textarea_set_text(_terminal_text, ">> RECON-UNIT LISTENING...\n");
 

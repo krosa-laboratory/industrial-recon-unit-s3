@@ -1,4 +1,5 @@
 #include "UIManager.h"
+#include <Arduino.h>
 
 UIManager* UIManager::_instance = nullptr;
 
@@ -18,31 +19,32 @@ void UIManager::setup() {}
 void UIManager::update()
 {
 
-    if (_current_screen != nullptr)
-        _current_screen->onLoop();
+    // Manage the screen switching
+    if (_next_screen != nullptr)
+    {
+        // Clean old screen
+        if (_current_screen != nullptr)
+        {
+            _current_screen->onExit();
+            delete _current_screen;
+        }
+        // Clean LVGL
+        lv_obj_clean(lv_scr_act());
+        // Load new screen
+        _current_screen = _next_screen;
+        _next_screen = nullptr;
+        if (_current_screen != nullptr) _current_screen->onEnter();
+    }
+    // Normal loop
+    if (_current_screen != nullptr) _current_screen->onLoop();
 
 }
 
 // Method to switch from one screen to another cleaning the memory.
 void UIManager::switchScreen(IScreen* new_screen)
 {
-
-    // Clean the old screen
-    if (_current_screen != nullptr)
-    {
-
-        _current_screen->onExit();
-        delete _current_screen;
-
-    }
-
-    // Clean LVGL
-    lv_obj_clean(lv_scr_act());
-    // Switch to the new screen
-    _current_screen = new_screen;
-    // Boot the new screen
-    if (_current_screen != nullptr)
-        _current_screen->onEnter();
+    if (_next_screen != nullptr) delete _next_screen;
+    _next_screen = new_screen;
 
 }
 
