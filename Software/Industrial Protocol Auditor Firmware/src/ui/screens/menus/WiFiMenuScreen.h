@@ -1,12 +1,12 @@
 #pragma once
-#include "BaseMenuScreen.h"
+#include "../../core/BaseMenuScreen.h"
 
-class CanMenuScreen : public BaseMenuScreen
+class WiFiMenuScreen : public BaseMenuScreen
 {
 
     public:
 
-        CanMenuScreen() : BaseMenuScreen("CAN TOOLS") {}
+        WiFiMenuScreen() : BaseMenuScreen("WIFI TOOLS") {}
 
     protected:
 

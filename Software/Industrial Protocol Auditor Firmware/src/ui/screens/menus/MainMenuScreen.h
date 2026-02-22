@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseMenuScreen.h"
+#include "../../core/BaseMenuScreen.h"
 
 class MainMenuScreen : public BaseMenuScreen
 {

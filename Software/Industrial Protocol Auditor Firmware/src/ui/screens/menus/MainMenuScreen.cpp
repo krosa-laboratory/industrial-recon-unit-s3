@@ -1,7 +1,7 @@
 #include "MainMenuScreen.h"
-#include "../UIManager.h"
+#include "../../core/UIManager.h"
 #include "CanMenuScreen.h"
-#include "WiFiScanScreen.h"
+#include "WiFiMenuScreen.h"
 
 enum { OPT_CAN_TOOLS, OPT_WIFI_TOOLS, OPT_SETTINGS };
 
@@ -23,7 +23,7 @@ void MainMenuScreen::onSelect(int id)
             UIManager::getInstance()->switchScreen(new CanMenuScreen());
             break;
         case OPT_WIFI_TOOLS:
-            UIManager::getInstance()->switchScreen(new WiFiScanScreen());
+            UIManager::getInstance()->switchScreen(new WiFiMenuScreen());
             break;
     }
 

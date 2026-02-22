@@ -3,8 +3,8 @@
 #include <lvgl.h>
 
 // UI Architecture
-#include "ui/UIManager.h"
-#include "ui/screens/MainMenuScreen.h"
+#include "ui/core/UIManager.h"
+#include "ui/screens/menus/MainMenuScreen.h"
 
 // GPIOs definition
 #define BTN_UP    13
@@ -128,6 +128,26 @@ void loop()
             UIManager::getInstance()->handleInput(BTN_ENTER);
         }
     } else enter_pressed = false;
+    // Detect UP button activation
+    static bool up_pressed = false;
+    if (digitalRead(BTN_UP) == LOW)
+    {
+        if (!up_pressed)
+        {
+            up_pressed = true;
+            UIManager::getInstance()->handleInput(BTN_UP);
+        }
+    } else up_pressed = false;
+    // Detect DOWN button activation
+    static bool down_pressed = false;
+    if (digitalRead(BTN_DOWN) == LOW)
+    {
+        if (!down_pressed)
+        {
+            down_pressed = true;
+            UIManager::getInstance()->handleInput(BTN_DOWN);
+        }
+    } else down_pressed = false;
     // Little pause
     delay(5);
 

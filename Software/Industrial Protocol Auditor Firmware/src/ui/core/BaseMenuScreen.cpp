@@ -1,5 +1,5 @@
 #include "BaseMenuScreen.h"
-#include "../UIManager.h"
+#include "UIManager.h"
 
 extern lv_group_t* navigation_group;
 

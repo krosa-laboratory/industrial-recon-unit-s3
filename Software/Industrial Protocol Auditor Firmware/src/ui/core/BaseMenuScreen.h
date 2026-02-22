@@ -1,5 +1,5 @@
 #pragma once
-#include "../IScreen.h"
+#include "IScreen.h"
 #include <lvgl.h>
 #include <vector>
 #include <string>
