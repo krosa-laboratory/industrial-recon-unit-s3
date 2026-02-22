@@ -22,7 +22,7 @@ void WiFiMenuScreen::onSelect(int id) {
             UIManager::getInstance()->switchScreen(new WiFiScannerScreen());
             break;
         case OPT_MONITOR:
-            //UIManager::getInstance()->switchScreen(new WiFiMonitorScreen());
+            UIManager::getInstance()->switchScreen(new WiFiMonitorScreen());
             break;
         case OPT_TRAINING:
             //UIManager::getInstance()->switchScreen(new WiFiAttackSimScreen());
