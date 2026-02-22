@@ -35,5 +35,7 @@ class UIManager
         void switchScreen(IScreen* new_screen);
         // Handles the button activation and gives them to the active screen.
         void handleInput(int button_gpio);
+        // Helper function to return the active screen.
+        IScreen* getCurrentScreen();
 
 };

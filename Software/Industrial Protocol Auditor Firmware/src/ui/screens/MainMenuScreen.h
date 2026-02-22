@@ -1,18 +1,17 @@
 #pragma once
-#include "../IScreen.h"
-#include <lvgl.h>
+#include "BaseMenuScreen.h"
 
-class MainMenuScreen : public IScreen {
-
-    private:
-
-        static void event_handler(lv_event_t * e);
+class MainMenuScreen : public BaseMenuScreen
+{
 
     public:
 
-        void onEnter() override;
-        void onLoop() override;
-        void onExit() override;
-        void onButtonPress(int gpio) override;
+        MainMenuScreen() : BaseMenuScreen("RECON-UNIT v1.0") {} // Title
+
+    protected:
+
+        void buildOptions() override;
+        void onSelect(int id) override;
+        void onBack() override {} // In the main menu, BACK button does nothing
 
 };

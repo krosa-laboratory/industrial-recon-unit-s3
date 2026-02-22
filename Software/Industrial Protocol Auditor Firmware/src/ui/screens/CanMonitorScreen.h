@@ -23,7 +23,8 @@ class CanMonitorScreen : public IScreen
     private:
 
         // Internal state
-        CanScreenMode _current_mode = MODE_SNIFFER;
+        CanScreenMode _current_mode;
+        CanScreenMode _start_mode;
         bool _is_paused = false;
         unsigned long _last_update = 0;
         unsigned long _entry_time = 0;
@@ -45,6 +46,8 @@ class CanMonitorScreen : public IScreen
         void toggleMode();
 
     public:
+
+        CanMonitorScreen(CanScreenMode startMode);
 
         void onEnter() override;
         void onLoop() override;

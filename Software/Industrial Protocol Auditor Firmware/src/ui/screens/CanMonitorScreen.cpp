@@ -1,13 +1,18 @@
 #include <Arduino.h>
 #include "CanMonitorScreen.h"
 #include "../UIManager.h"
-#include "MainMenuScreen.h"
+#include "CanMenuScreen.h"
 
 // Design constants.
-#define COLOR_MATRIX lv_color_hex(0x00FF00)
+#define COLOR_MATRIX  lv_color_hex(0x00FF00)
 #define COLOR_WARNING lv_color_hex(0xFFAA00)
-#define COLOR_ERROR lv_color_hex(0xFF0000)
+#define COLOR_ERROR   lv_color_hex(0xFF0000)
 #define DATA_REFRESH_RATE 150 // ms
+
+CanMonitorScreen::CanMonitorScreen(CanScreenMode startMode)
+{
+    _start_mode = startMode;
+}
 
 void CanMonitorScreen::onEnter()
 {
@@ -30,10 +35,25 @@ void CanMonitorScreen::onEnter()
     // Set default value for variables
     _is_paused = false;
     _last_update = millis();
-    // Default state.
-    _current_mode = MODE_SNIFFER;
-    lv_obj_clear_flag(_sniffer_view, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(_stats_view, LV_OBJ_FLAG_HIDDEN);
+    // Load needed screen.
+    _current_mode = _start_mode;
+    if (_current_mode == MODE_SNIFFER)
+    {
+        lv_obj_clear_flag(_sniffer_view, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(_stats_view, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(_header_label, "CAN: SNIFFER LOG");
+    } else if (_current_mode == MODE_STATS) 
+    {
+        lv_obj_add_flag(_sniffer_view, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(_stats_view, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(_header_label, "CAN: DASHBOARD");
+    } else if (_current_mode == MODE_SENDER)
+    {
+        // TODO: Implementar vista de inyección en el futuro
+        lv_obj_add_flag(_sniffer_view, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(_stats_view, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(_header_label, "CAN: SENDER");
+    }
     // Force display update
     lv_obj_update_layout(screen);
     lv_obj_invalidate(screen);
@@ -65,7 +85,7 @@ void CanMonitorScreen::onButtonPress(int gpio)
 
     if (gpio == 27) // BUTTON BACK.
     {
-        UIManager::getInstance()->switchScreen(new MainMenuScreen());
+        UIManager::getInstance()->switchScreen(new CanMenuScreen());
         return;
     }
 

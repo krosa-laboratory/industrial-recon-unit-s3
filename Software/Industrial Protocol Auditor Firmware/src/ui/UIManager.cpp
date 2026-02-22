@@ -55,3 +55,8 @@ void UIManager::handleInput(int button_gpio)
         _current_screen->onButtonPress(button_gpio);
 
 }
+
+IScreen* UIManager::getCurrentScreen()
+{
+    return _current_screen;
+}
