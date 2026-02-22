@@ -19,7 +19,7 @@ void WiFiMenuScreen::buildOptions() {
 void WiFiMenuScreen::onSelect(int id) {
     switch(id) {
         case OPT_SCANNER:
-            //UIManager::getInstance()->switchScreen(new WiFiScannerScreen());
+            UIManager::getInstance()->switchScreen(new WiFiScannerScreen());
             break;
         case OPT_MONITOR:
             //UIManager::getInstance()->switchScreen(new WiFiMonitorScreen());

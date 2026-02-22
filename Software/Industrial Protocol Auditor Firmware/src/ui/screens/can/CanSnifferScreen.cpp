@@ -53,12 +53,12 @@ void CanSnifferScreen::onLoop()
     if (!_is_paused && (millis() - _last_update > DATA_REFRESH_RATE))
     {
         _last_update = millis();
-        updateSniffer();
+        _updateSniffer();
     }
 
 }
 
-void CanSnifferScreen::updateSniffer()
+void CanSnifferScreen::_updateSniffer()
 {
 
     int id = (esp_random() % (0x400 - 0x100)) + 0x100;

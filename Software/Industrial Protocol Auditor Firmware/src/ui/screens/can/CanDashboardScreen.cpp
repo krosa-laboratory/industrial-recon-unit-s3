@@ -80,12 +80,12 @@ void CanDashboardScreen::onLoop()
     if (millis() - _last_update > DATA_REFRESH_RATE)
     {
         _last_update = millis();
-        updateStats();
+        _updateStats();
     }
 
 }
 
-void CanDashboardScreen::updateStats()
+void CanDashboardScreen::_updateStats()
 {
 
     static int load = 0;

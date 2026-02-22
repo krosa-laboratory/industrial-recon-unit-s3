@@ -14,7 +14,7 @@ class CanSnifferScreen : public IScreen
         lv_obj_t* _header_label;
         lv_obj_t* _terminal_text;
 
-        void updateSniffer();
+        void _updateSniffer();
 
     public:
 

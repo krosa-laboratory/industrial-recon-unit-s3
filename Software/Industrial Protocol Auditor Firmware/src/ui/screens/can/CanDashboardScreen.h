@@ -15,7 +15,7 @@ class CanDashboardScreen : public IScreen
         lv_obj_t* _label_error_count;
         lv_obj_t* _label_unique_ids;
 
-        void updateStats();
+        void _updateStats();
 
     public:
 
