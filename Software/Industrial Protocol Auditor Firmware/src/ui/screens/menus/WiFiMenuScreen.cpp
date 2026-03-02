@@ -5,15 +5,15 @@
 // Pantallas a las que vamos a llamar
 #include "../wifi/WiFiScannerScreen.h"
 #include "../wifi/WiFiMonitorScreen.h"
-#include "../wifi/WiFiAttackSimScreen.h"
+#include "../wifi/WiFiWidsScreen.h"
 
 // IDs locales para este menú
-enum { OPT_SCANNER, OPT_MONITOR, OPT_TRAINING };
+enum { OPT_SCANNER, OPT_MONITOR, OPT_WIDS };
 
 void WiFiMenuScreen::buildOptions() {
     _options.push_back({"WiFi Scanner",   OPT_SCANNER});
     _options.push_back({"Packet Monitor", OPT_MONITOR});
-    _options.push_back({"Attack Sim",     OPT_TRAINING});
+    _options.push_back({"WIDS Detector",  OPT_WIDS});
 }
 
 void WiFiMenuScreen::onSelect(int id) {
@@ -24,8 +24,8 @@ void WiFiMenuScreen::onSelect(int id) {
         case OPT_MONITOR:
             UIManager::getInstance()->switchScreen(new WiFiMonitorScreen());
             break;
-        case OPT_TRAINING:
-            //UIManager::getInstance()->switchScreen(new WiFiAttackSimScreen());
+        case OPT_WIDS:
+            UIManager::getInstance()->switchScreen(new WiFiWidsScreen());
             break;
     }
 }
