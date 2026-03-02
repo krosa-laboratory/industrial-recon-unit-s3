@@ -2,6 +2,7 @@
 #include "../../core/UIManager.h"
 #include "MainMenuScreen.h"
 #include "../ble/BleRadarScreen.h"
+#include "../ble/BleGattScreen.h"
 
 enum { OPT_RADAR, OPT_GATT };
 
@@ -9,7 +10,7 @@ void BleMenuScreen::buildOptions()
 {
 
     _options.push_back({"BLE Radar", OPT_RADAR});
-    // _options.push_back({"GATT Explorer", OPT_GATT});
+    _options.push_back({"GATT Explorer", OPT_GATT});
 
 }
 
@@ -22,7 +23,7 @@ void BleMenuScreen::onSelect(int id)
             UIManager::getInstance()->switchScreen(new BleRadarScreen());
             break;
         case OPT_GATT:
-            // UIManager::getInstance()->switchScreen(new BleGattScreen());
+            UIManager::getInstance()->switchScreen(new BleGattScreen());
             break;
     }
 
