@@ -4,6 +4,7 @@
 #include "RsMenuScreen.h"
 #include "WiFiMenuScreen.h"
 #include "BleMenuScreen.h"
+#include "SettingsMenuScreen.h"
 
 enum { OPT_CAN_TOOLS, OPT_RS485_TOOLS, OPT_WIFI_TOOLS, OPT_BLE_TOOLS, OPT_SETTINGS };
 
@@ -34,6 +35,9 @@ void MainMenuScreen::onSelect(int id)
             break;
         case OPT_BLE_TOOLS:
             UIManager::getInstance()->switchScreen(new BleMenuScreen());
+            break;
+        case OPT_SETTINGS:
+            UIManager::getInstance()->switchScreen(new SettingsMenuScreen());
             break;
     }
 
