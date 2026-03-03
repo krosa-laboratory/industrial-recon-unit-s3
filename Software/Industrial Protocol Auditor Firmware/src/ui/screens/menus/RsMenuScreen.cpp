@@ -3,7 +3,7 @@
 #include "MainMenuScreen.h"
 
 #include "../rs/RsSnifferScreen.h"
-// #include "../rs/ModbusScannerScreen.h"
+#include "../rs/ModbusScannerScreen.h"
 
 enum { OPT_SNIFFER, OPT_MODBUS };
 
@@ -22,7 +22,7 @@ void RsMenuScreen::onSelect(int id)
             UIManager::getInstance()->switchScreen(new RsSnifferScreen());
             break;
         case OPT_MODBUS:
-            // UIManager::getInstance()->switchScreen(new ModbusScannerScreen());
+            UIManager::getInstance()->switchScreen(new ModbusScannerScreen());
             break;
     }
 
