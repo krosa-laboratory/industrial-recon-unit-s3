@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Components")(type "KiCad")(uri "${KIPRJMOD}/Components")(options "")(descr ""))
+  (lib (name "SS-12")(type "KiCad")(uri "${KIPRJMOD}/SS-12.pretty")(options "")(descr ""))
+)
